@@ -1,0 +1,20 @@
+npm init -y 로 package.json 생성
+git init
+
+.gitignore file create
+npm i express cors dotenv hpp helmet
+npm i mongoose --save
+npm i moment --save
+
+babel => 브라우져가 최신문법을 지원해줄수 있게 
+npm i @babel/cli @babel/core @babel/node @babel/preset-env babel-loader @babel/polyfill -D
+npm i morgan nodemon
+
+create server, client folder
+
+[05_ Express]
+- create app.js, server.js at server folder
+  server.js : run server
+  app.js : server programming ( router , etc)
+- add script at package.json ("dev": "nodemon ./server/server.js --exec babel-node")
+- add .babelrc to configure babel

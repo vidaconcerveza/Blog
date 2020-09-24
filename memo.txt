@@ -12,9 +12,54 @@ npm i morgan nodemon
 
 create server, client folder
 
+
+<AT SERVER FOLDER>
 [05_ Express]
 - create app.js, server.js at server folder
   server.js : run server
   app.js : server programming ( router , etc)
 - add script at package.json ("dev": "nodemon ./server/server.js --exec babel-node")
 - add .babelrc to configure babel
+- git
+  git commit -m "first commit"
+  git remote add origin https://github.com/vidaconcerveza/Blog.git
+  git push -u origin master
+
+
+[06_MongoDB Model]
+- create models folder and user.js post.js comment.js category.js
+
+[08. Connect to MongoDB]
+cluster 사용!
+(cluster = connect to app)
+blog folder .env 파일을만들고, MONGO_URI 만들기 => dotenv 사용해서 가져올수 있음
+<dbname> = 임의로 지정해도 됨
+.env -> server/config/index.js -> app.js
+
+
+[09. Router]
+- For security, app.use (helmet, hpp, cors) at app.js
+- for logging app.use(morgan('dev')) at app.js
+- bodyparser -> app.use(express.json())
+  server/routes/api/post.js, user.js
+  post.js 에 router coding 하고 app.js 에서 접근가능하게 모듈화 (app.js => app.use('/api/post', postModule))
+
+[11. UserRoutes]
+회원가입 로그인 등 처리 jwt 사용해서 (user.js / route)
+- npm i bcryptjs jsonwebtoken
+
+[12. Auth Middleware]
+ - get token -> 해석 -> req token과 비교해 Next
+ - server/middleware/auth.js
+ - routes/api/post.js - app.post 에 auth 미들웨어를 추가해줌.
+
+
+[13. Login/out]
+  - routers/api/auth.js 생성
+  - token의 유효 기간을 좀 짧게 하는게 보안적인 측면에서 좋음
+  - logout은 Redux Saga를 통해서 구현하므로 그냥 대충.
+
+
+
+[14. FrontEnd Start] = client 폴더
+npx create-react-app .

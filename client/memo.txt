@@ -1,0 +1,224 @@
+npx create-react-app
+불필요 파일 삭제 => App.css, App.test.js, logo.svg, serviceWorker, setup-
+폴더 생성 src/components, routes, assets, redux
+
+library 설치(npm install)
+redux, react-redux, redux-saga, react-router-dom, connected-react-router, bootstrap, reactstrap dotenv
+redux = 상태관리
+redux-saga = 비동기식 상태관리 등등
+
+npm i history@4.7.2
+
+React의 경우 Redux 등의 상태관리가 어려움 => GraphGL등을 사용해서 처리하는 경우가 있으나,
+그냥 리덕스 쓰셈
+restAPI 쓰려면 REDUX로!
+
+[16. Redux Setting]
+  - src/redux/reducers, sagas 생성
+  - 각각 index.js 파일 생성
+  - src/store.js 파일 생성
+  - store에 모든 상태값을 저장하고, store에서 꺼내와 쓰려고 하는거!!
+  Redux -> Store 
+  
+[17. Header/Footer]
+- components/header.js, Footer.js 만들기
+- routes/normalRoute, protectedRoute, routes/Router.js
+<Fragment></Fragment>
+- App.js 에서 Store, Redux 결합 => 
+  import {Provider} from 'react-redux'
+  import {ConnectRouter} from 'connected-react-router'
+  import store, {history} from './store'
+  import MyRouter from './routes/Router'
+-Style = Bootstrap / AntD / MaterialUI 
+  import "boostrap/dist/css/bootstrap.min.css"
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <MyRouter></MyRouter>
+      </ConnectedRouter>
+    </Provider>
+  );
+};
+
+Provider = > 상태관리는 무조건 스토어에서만 이루어지므로, Provider가 최상위
+ConnectedRouter => History를 이용해 라우터 달아주고, 그 다음 MyRouter
+
+
+
+[18. Footer]
+- assets/ style.css 만들어도 되지만, scss로 하면 좀 더 능동적으로 가능 
+- scss => css 변환이 필요하기 때문에
+  npm install node-sass sass-loader --save
+
+- className => reactstrap
+
+[19. Header]
+- Nav! = 어디로 이동할지 = Router
+- components/AppNavBar.js 생성 
+- routes/Router.js 에 AppNavBar 추가
+- NavBarToggler = 화면 줄었을때 햄버거 버튼
+
+
+[21. Header 3 Modal _ Reducer Setting]
+- components/auth/LoginModal.js
+- redux/types.js 에 타입 설정
+- Redux 초기값을 설정해주기
+  redux/reducers/authReducer.js 생성
+  initialState 의 이름은 Store.js의 initialState와 같게 해야함
+
+- redux-saga !!
+  redux/sagas/authSaga.js 생성하고 작성 => sagas/index.js 작성
+  index.js에서는 dotenv를사용해야하기때문에 client 폴더에 .env 생성하고 불러오기(server url 설정 정도)
+
+[23. Modal]
+components/auth/loginmodal.js 
+useState, useDispatch, useSelect
+useSelect = authReducer에서 불러오는거.
+useEffect = 무언가 변화가 있을때!
+redux/index.js > auth:authReducer를 추가해줘야 loginModal에서 사용 가능
+Modal 작성후, AppNavbar에 추가해줘야함!!
+
+인증 된 후에는 AppNavBar 작업을 좀 해줘야함.
+** useSelector의 state.auth = auth:: redux/index.js 에서 auth를 의미함.
+
+[24. Modal-RegisterForm]
+- Redux 개발자 도구 설치to Chrome
+
+- LOGOUT
+  types.js => authReducer => authSaga 순으로 작업해주기
+  type에 플래그를 설정해주고,
+  authReducer에서 어떻게 데이터 처리 할지.
+  authSaga에서는 함수로 구현
+
+- useCallback, useEffect는 거의 유사하지만 useCallback은 기존값을 저장하고 있다가 그 값을 변화할때에만 새로 그려줌
+
+
+[27.UserLoading] = Login 유지 기술
+USER_LOADING에 관련한 types.js 만들어 주고,
+authReducer, authSaga에 해당 내용을 추가해줌.
+
+
+components/auth/loadUser.js를 생성함 => 계속해서 로그인 유지해주려면..
+일반적으로 useEffect를 사용해서! 맨 앞에 함수를 달아주는게 훨씬 속도가 빠름
+이 경우, index.js에 추가해주자 
+import loadUser ,,, 
+loadUser();
+Rendering~
+
+
+[28. header / history]
+REGISTERY_REQUEST 에 관한 부분을 먼저 해주고,
+
+
+
+[29. Router / Category]
+routes/normalRoute 폴더에 각각 CategoryResult, PostCard, PostDetail 등을 만들어줌
+각각의 화면에 렌더링할 컴포넌트임
+=> 
+실제 이게, routes/Router.js에 렌더링 될 예정
+<Switch>
+  <Route path="/" exact component={aaa}/>
+</Switch>
+
+post, posts.... => server side/client side route 가 달라야 구분이 쉬워짐.
+
+[30. PostCardList(1)]
+ - Redux 부터 => Reducer부터
+ post도 똑같이, Types.js, postReducer, postSaga 를 작업해주고..
+ Reducer/index.js에 postReducer를 추가해줌
+ Sagas/index.js도 작업해주고
+ 
+ [31. PostCard(2)]
+- fontawesome 설치 : 
+npm install --save @fortawesome/react-fontawesome
+npm i @fortawesome/free-solid-svg-icons --save
+-component/Spinner/Spinner.js 생성 (빙글빙글)
+-component/post/PostCardOne.js 생성 (변수로 받는 posts = 리덕스에서 받아온 포스트)
+npm i react-helmet
+
+계속해서 포스트카드가 쌓이는건...
+postReducer에서 REQUEST부분을 posts:[] 로 초기화 해주면 된다.
+
+
+[32. PostWrite => CKEditor5]
+npm install --save @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
+CRA Config => npm run eject 를 해줍시다..
+-config/webpack.config.js 에서.. 편집좀 해줘야함.
+(CKEditor 부분 r:30)
+inputSourceMap:shouldUseSourceMap => 아래 부분, 
+
+-babel 설정
+npm i @babel/plugin-transform-react-jsx @babel/plugin-transform-react-jsx-self
+yarn add \
+    raw-loader@3 \
+    @ckeditor/ckeditor5-dev-utils \
+    @ckeditor/ckeditor5-theme-lark \
+    @ckeditor/ckeditor5-react \
+    @ckeditor/ckeditor5-editor-classic \
+    @ckeditor/ckeditor5-essentials \
+    @ckeditor/ckeditor5-paragraph \
+    @ckeditor/ckeditor5-basic-styles
+
+npm i @ckeditor/ckeditor5-dev-utils @ckeditor/ckeditor5-theme-lark  @ckeditor/ckeditor5-react @ckeditor/ckeditor5-editor-classic @ckeditor/ckeditor5-essentials @ckeditor/ckeditor5-paragraph @ckeditor/ckeditor5-basic-styles
+
+npm i @ckeditor/ckeditor5-adapter-ckfinder @ckeditor/ckeditor5-alignment @ckeditor/ckeditor5-autoformat @ckeditor/ckeditor5-basic-styles @ckeditor/ckeditor5-block-quote @ckeditor/ckeditor5-build-balloon @ckeditor/ckeditor5-build-classic @ckeditor/ckeditor5-build-inline @ckeditor/ckeditor5-dev-utils @ckeditor/ckeditor5-dev-webpack-plugin @ckeditor/ckeditor5-easy-image @ckeditor/ckeditor5-editor-balloon @ckeditor/ckeditor5-editor-classic @ckeditor/ckeditor5-essentials @ckeditor/ckeditor5-font @ckeditor/ckeditor5-heading @ckeditor/ckeditor5-image @ckeditor/ckeditor5-indent @ckeditor/ckeditor5-link @ckeditor/ckeditor5-list @ckeditor/ckeditor5-media-embed @ckeditor/ckeditor5-paragraph @ckeditor/ckeditor5-paste-from-office @ckeditor/ckeditor5-react @ckeditor/ckeditor5-table @ckeditor/ckeditor5-theme-lark @ckeditor/ckeditor5-typing @ckeditor/ckeditor5-upload
+
+
+
+[34. CKEditor5 Setting]
+- ssaple.net 에서 Editor부분은 긁어다가, components/editor/editorConfig.js
+나중에 알아서 편집해도 됨
+여기서 SimpleUpload 기능은 ... 
+
+대충 , CKEditor => Deepdive => Custom Upload adapter를 사용합시다
+
+
+[35. ImageUpload하기 = AWS Setting]
+AWS 무료사용자로 가입하고, Console Login -> S3 Service -> 퍼블릭으로 Bucket 만들기
+버킷에 upload 폴더 생성하고, 액세스 권한을 Every 
+정책은 ssaple 꺼 가져오면 됨 => Resouce부분만 내 버킷이름으로 해주면 됨
+CORS도 같이 설정해줌.
+- 최상위 폴더의 .evn 폴더에 AWS_KEY, AWS_PRIVATE_KEY 넣어줌
+
+[36.Server Image Router]
+npm i multer-s3 path aws-sdk  // blog 폴더에서 진행해줌..
+multer-s3 => s3와 파일을 주고 받음
+path = 경로를 파악하게
+aws-sdk = AWS 사용할수 있게
+multer 도 같이 설치하고
+
+server의 routes/api/post.js 에서 post(/image)를 추가해줘야함.
+
+[37.CKEditor Final Setting]
+client/src/components/editor/UploadAdapter.js 로 들어갑시다..
+=> CKEditor5 documentation/Framework/DeepDive/CustomUploadAdapter
+The complete implementation 의 코드를 붙여넣고 저장
+
+이중에서 initRequest에서 URL 부분만 서버쪽으로 바꿈 (dotenv 불러와서)
+/api/post/image를 붙여주면 끝
+
+코드 중 맨 마지막 부분은 삭제해주고, 맨 마지막 펑션은 const ~ 로 해서 export default 
+
+
+[38. CKEditor For React]
+
+-----------------------------
+css 기초 지식
+background = background
+color = font-color
+
+-----------------------------
+[bootstrap]
+text-center = align to center
+p-2 : padding 2*0.25rem
+mb-3 : margin-bottom 3*
+offset-md-3 : offset 주기! col-3 이후부터. 
+background:url() << 이미지로 백그라운드를 설정하는것도 가능
+background-attachment:fixed = 고정해줌
+
+-----------------------------
+[ReactStrap]
+Col md="6", sm="auto" className="text-center m-auto" 와 같은 식으로 md, sm 등은 숫자로 넣을수 있음
+Navbar, Container

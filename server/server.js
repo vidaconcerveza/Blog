@@ -1,5 +1,9 @@
 import app from './app'
+import config from './config/index'
 
-app.listen(7000, () => {
-    console.log('hi')
+const {
+    PORT
+} = config
+app.listen(PORT, () => {
+    console.log(`THIS APP IS RUNNING AT PORT ${PORT} `)
 })
